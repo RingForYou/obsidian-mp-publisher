@@ -1,0 +1,196 @@
+/* 猩红主题 - 热情醒目 */
+
+.mp-content-section {
+  font-size: 16px;
+  color: #3f3f3f;
+  line-height: 1.75;
+  letter-spacing: 0.03em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+}
+
+/* 标题 */
+.mp-content-section h1 {
+  margin: 32px 0 16px;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #fff;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border-radius: 4px;
+}
+
+.mp-content-section h2 {
+  margin: 28px 0 14px;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #dc2626;
+  padding: 10px 16px;
+  background-color: #fef2f2;
+  border-left: 4px solid #dc2626;
+}
+
+.mp-content-section h3 {
+  margin: 24px 0 12px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #b91c1c;
+  padding-left: 12px;
+  border-left: 3px solid #dc2626;
+}
+
+.mp-content-section h4,
+.mp-content-section h5,
+.mp-content-section h6 {
+  margin: 20px 0 10px;
+  font-size: 1em;
+  font-weight: bold;
+  color: #991b1b;
+}
+
+/* 段落 */
+.mp-content-section p {
+  margin: 15px 0;
+  line-height: 1.75;
+  color: #3f3f3f;
+}
+
+/* 列表 */
+.mp-content-section ul,
+.mp-content-section ol {
+  padding-left: 30px;
+  margin: 15px 0;
+}
+
+.mp-content-section li {
+  margin: 8px 0;
+  line-height: 1.75;
+  color: #3f3f3f;
+}
+
+/* 引用 */
+.mp-content-section blockquote {
+  margin: 20px 0;
+  padding: 15px 20px;
+  background-color: #fef2f2;
+  border-left: 4px solid #dc2626;
+  color: #666;
+  font-style: italic;
+  border-radius: 0 6px 6px 0;
+}
+
+.mp-content-section blockquote p {
+  margin: 0;
+  line-height: inherit;
+}
+
+/* 代码块 */
+.mp-content-section pre {
+  background: #1f2937;
+  border-radius: 6px;
+  padding: 1em;
+  margin: 1.2em 0;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.mp-content-section pre .mp-code-header {
+  margin-bottom: 1em;
+  display: flex;
+  gap: 6px;
+}
+
+.mp-content-section pre .mp-code-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.mp-content-section pre .mp-code-dot:nth-child(1) { background-color: #ff5f56; }
+.mp-content-section pre .mp-code-dot:nth-child(2) { background-color: #ffbd2e; }
+.mp-content-section pre .mp-code-dot:nth-child(3) { background-color: #27c93f; }
+
+.mp-content-section pre code {
+  color: #e5e7eb;
+}
+
+.mp-content-section code:not(pre code) {
+  background: #fef2f2;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #dc2626;
+  font-size: 0.9em;
+}
+
+/* 链接 */
+.mp-content-section a {
+  color: #dc2626;
+  text-decoration: none;
+  border-bottom: 1px solid #dc2626;
+}
+
+/* 强调 */
+.mp-content-section strong {
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.mp-content-section em {
+  font-style: italic;
+}
+
+.mp-content-section del {
+  text-decoration: line-through;
+  color: #999;
+}
+
+/* 表格 */
+.mp-content-section table {
+  width: 100%;
+  margin: 1em 0;
+  border-collapse: collapse;
+  border: 1px solid #e5e7eb;
+}
+
+.mp-content-section th {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  font-weight: bold;
+  color: #fff;
+  padding: 10px 15px;
+  border: 1px solid #e5e7eb;
+}
+
+.mp-content-section td {
+  padding: 10px 15px;
+  border: 1px solid #e5e7eb;
+  color: #3f3f3f;
+}
+
+.mp-content-section tr:nth-child(even) {
+  background-color: #fef2f2;
+}
+
+/* 分隔线 */
+.mp-content-section hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #dc2626, transparent);
+  margin: 24px 0;
+}
+
+/* 图片 */
+.mp-content-section img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em auto;
+  border-radius: 6px;
+}
+
+/* 脚注 */
+.mp-content-section .footnote-ref,
+.mp-content-section .footnote-backref {
+  color: #dc2626;
+  text-decoration: none;
+  font-size: 0.9em;
+}

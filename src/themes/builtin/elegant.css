@@ -1,0 +1,189 @@
+/* 优雅主题 - 文艺气质 */
+
+.mp-content-section {
+  font-size: 16px;
+  color: #3f3f3f;
+  line-height: 1.8;
+  letter-spacing: 0.05em;
+  font-family: 'Georgia', 'Noto Serif SC', 'Source Han Serif CN', serif;
+}
+
+/* 标题 */
+.mp-content-section h1 {
+  margin: 36px 0 18px;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #8b4513;
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #d2691e;
+  letter-spacing: 0.1em;
+}
+
+.mp-content-section h2 {
+  margin: 30px 0 15px;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #8b4513;
+  padding-left: 15px;
+  border-left: 4px solid #d2691e;
+}
+
+.mp-content-section h3 {
+  margin: 24px 0 12px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #a0522d;
+}
+
+.mp-content-section h4,
+.mp-content-section h5,
+.mp-content-section h6 {
+  margin: 20px 0 10px;
+  font-size: 1em;
+  font-weight: bold;
+  color: #a0522d;
+}
+
+/* 段落 */
+.mp-content-section p {
+  margin: 1em 0;
+  line-height: 2;
+  text-indent: 0;
+  color: #3f3f3f;
+}
+
+/* 列表 */
+.mp-content-section ul,
+.mp-content-section ol {
+  padding-left: 2em;
+  margin: 1em 0;
+}
+
+.mp-content-section li {
+  margin: 0.5em 0;
+  line-height: 1.8;
+  color: #3f3f3f;
+}
+
+/* 引用 */
+.mp-content-section blockquote {
+  border-left: 3px solid #d2691e;
+  padding: 12px 20px;
+  background: #fdf5e6;
+  margin: 1em 0;
+  color: #8b6914;
+  font-style: italic;
+  border-radius: 0 8px 8px 0;
+}
+
+.mp-content-section blockquote p {
+  margin: 0;
+  line-height: inherit;
+}
+
+/* 代码块 */
+.mp-content-section pre {
+  background: #faf8f5;
+  border: 1px solid #e8dcc8;
+  border-radius: 6px;
+  padding: 1em;
+  margin: 1.2em 0;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.mp-content-section pre .mp-code-header {
+  margin-bottom: 1em;
+  display: flex;
+  gap: 6px;
+}
+
+.mp-content-section pre .mp-code-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.mp-content-section pre .mp-code-dot:nth-child(1) { background-color: #d2691e; }
+.mp-content-section pre .mp-code-dot:nth-child(2) { background-color: #daa520; }
+.mp-content-section pre .mp-code-dot:nth-child(3) { background-color: #8fbc8f; }
+
+.mp-content-section code:not(pre code) {
+  background: #fdf5e6;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #8b4513;
+  font-size: 0.9em;
+}
+
+/* 链接 */
+.mp-content-section a {
+  color: #d2691e;
+  text-decoration: none;
+  border-bottom: 1px solid #d2691e;
+}
+
+/* 强调 */
+.mp-content-section strong {
+  font-weight: bold;
+  color: #8b4513;
+}
+
+.mp-content-section em {
+  font-style: italic;
+  color: #3f3f3f;
+}
+
+.mp-content-section del {
+  text-decoration: line-through;
+  color: #999;
+}
+
+/* 表格 */
+.mp-content-section table {
+  width: 100%;
+  margin: 1em 0;
+  border-collapse: collapse;
+  border: 1px solid #e8dcc8;
+}
+
+.mp-content-section th {
+  background: linear-gradient(135deg, #fdf5e6, #faebd7);
+  font-weight: bold;
+  color: #8b4513;
+  padding: 10px;
+  border: 1px solid #e8dcc8;
+}
+
+.mp-content-section td {
+  padding: 10px;
+  border: 1px solid #e8dcc8;
+  color: #3f3f3f;
+}
+
+/* 分隔线 */
+.mp-content-section hr {
+  border: none;
+  border-top: 1px solid #e8dcc8;
+  margin: 24px 0;
+}
+
+/* 图片 */
+.mp-content-section img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
+}
+
+/* 脚注 */
+.mp-content-section .footnote-ref,
+.mp-content-section .footnote-backref {
+  color: #d2691e;
+  text-decoration: none;
+  font-size: 0.9em;
+}

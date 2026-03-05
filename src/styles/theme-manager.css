@@ -1,0 +1,426 @@
+/* ==================== 主题管理界面样式 ==================== */
+
+.mp-theme-manager {
+    padding: 0;
+    overflow-y: auto;
+}
+
+.mp-theme-manager-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+}
+
+/* 头部 */
+.mp-tm-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mp-tm-header h2 {
+    margin: 0 0 6px;
+    font-size: 1.5em;
+}
+
+.mp-tm-desc {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* 区域 */
+.mp-tm-section {
+    margin-bottom: 32px;
+}
+
+.mp-tm-section h3 {
+    margin: 0 0 12px;
+    font-size: 1.2em;
+}
+
+.mp-tm-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.mp-tm-section-header h3 {
+    margin: 0;
+    flex: 1;
+}
+
+.mp-tm-subsection {
+    margin-bottom: 20px;
+}
+
+.mp-tm-subsection h4 {
+    margin: 0 0 8px;
+    font-size: 1em;
+    color: var(--text-muted);
+}
+
+/* 主题卡片网格 */
+.mp-tm-theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+/* 主题卡片 */
+.mp-tm-theme-card {
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    padding: 14px;
+    background: var(--background-primary);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.mp-tm-theme-card:hover {
+    border-color: var(--interactive-accent);
+}
+
+.mp-tm-card-active {
+    border-color: var(--interactive-accent);
+    box-shadow: 0 0 0 1px var(--interactive-accent);
+    background: var(--background-primary-alt);
+}
+
+.mp-tm-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.mp-tm-card-name {
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.mp-tm-card-author {
+    font-size: 0.8em;
+    color: var(--text-muted);
+}
+
+.mp-tm-card-source {
+    font-size: 0.75em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.mp-tm-source-builtin {
+    background: var(--background-modifier-success);
+    color: var(--text-on-accent);
+}
+
+.mp-tm-source-remote {
+    background: var(--interactive-accent);
+    color: var(--text-on-accent);
+}
+
+.mp-tm-source-local {
+    background: var(--background-modifier-border);
+    color: var(--text-normal);
+}
+
+.mp-tm-card-desc {
+    margin: 4px 0 8px;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* CSS 预览 */
+.mp-tm-card-preview {
+    background: var(--background-secondary);
+    border-radius: 4px;
+    padding: 8px;
+    margin: 8px 0;
+    max-height: 80px;
+    overflow: hidden;
+    font-size: 0.75em;
+    line-height: 1.4;
+    position: relative;
+}
+
+.mp-tm-card-preview::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background: linear-gradient(transparent, var(--background-secondary));
+}
+
+.mp-tm-card-preview code {
+    font-size: inherit;
+    white-space: pre;
+}
+
+/* 卡片操作按钮 */
+.mp-tm-card-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.mp-tm-card-actions button {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    cursor: pointer;
+    border: 1px solid var(--background-modifier-border);
+    background: var(--background-primary);
+    color: var(--text-normal);
+    transition: all 0.15s;
+}
+
+.mp-tm-card-actions button:hover {
+    background: var(--background-modifier-hover);
+}
+
+.mp-tm-use-btn {
+    background: var(--interactive-accent) !important;
+    color: var(--text-on-accent) !important;
+    border-color: var(--interactive-accent) !important;
+}
+
+.mp-tm-use-btn:hover {
+    opacity: 0.9;
+}
+
+.mp-tm-delete-btn {
+    color: var(--text-error) !important;
+    border-color: var(--text-error) !important;
+}
+
+.mp-tm-delete-btn:hover {
+    background: var(--background-modifier-error) !important;
+    color: white !important;
+}
+
+.mp-tm-active-label {
+    color: var(--interactive-accent);
+    font-weight: 600;
+    font-size: 0.85em;
+}
+
+/* 按钮样式 */
+.mp-tm-refresh-btn,
+.mp-tm-add-btn {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    cursor: pointer;
+    border: 1px solid var(--background-modifier-border);
+    background: var(--background-primary);
+    color: var(--text-normal);
+    transition: all 0.15s;
+}
+
+.mp-tm-refresh-btn:hover,
+.mp-tm-add-btn:hover {
+    background: var(--background-modifier-hover);
+}
+
+.mp-tm-add-btn {
+    background: var(--interactive-accent);
+    color: var(--text-on-accent);
+    border-color: var(--interactive-accent);
+}
+
+.mp-tm-download-btn {
+    background: var(--interactive-accent) !important;
+    color: var(--text-on-accent) !important;
+    border-color: var(--interactive-accent) !important;
+}
+
+/* 空状态 / 加载 / 错误 */
+.mp-tm-empty,
+.mp-tm-loading,
+.mp-tm-error {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    grid-column: 1 / -1;
+}
+
+.mp-tm-error {
+    color: var(--text-error);
+}
+
+/* 隐藏 */
+.mp-tm-hidden {
+    display: none !important;
+}
+
+/* CSS 编辑器区域 */
+.mp-tm-editor-section {
+    margin-top: 16px;
+    padding: 16px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    background: var(--background-primary-alt);
+}
+
+.mp-tm-editor-section h4 {
+    margin: 0 0 12px;
+}
+
+.mp-tm-form-group {
+    margin-bottom: 12px;
+}
+
+.mp-tm-form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 0.9em;
+}
+
+.mp-tm-hint {
+    font-size: 0.8em;
+    color: var(--text-muted);
+    margin: 2px 0 6px;
+}
+
+.mp-tm-input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-primary);
+    color: var(--text-normal);
+    font-size: 0.9em;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.mp-tm-css-editor {
+    width: 100%;
+    min-height: 300px;
+    padding: 10px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-primary);
+    color: var(--text-normal);
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    box-sizing: border-box;
+    tab-size: 4;
+}
+
+.mp-tm-css-editor:focus {
+    outline: none;
+    border-color: var(--interactive-accent);
+}
+
+.mp-tm-button-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.mp-tm-save-btn {
+    padding: 6px 16px;
+    border-radius: 4px;
+    background: var(--interactive-accent);
+    color: var(--text-on-accent);
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.mp-tm-save-btn:hover {
+    opacity: 0.9;
+}
+
+.mp-tm-cancel-btn {
+    padding: 6px 16px;
+    border-radius: 4px;
+    background: var(--background-primary);
+    color: var(--text-normal);
+    border: 1px solid var(--background-modifier-border);
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.mp-tm-cancel-btn:hover {
+    background: var(--background-modifier-hover);
+}
+
+/* 字体管理 */
+.mp-tm-font-list {
+    margin-bottom: 16px;
+}
+
+.mp-tm-font-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    background: var(--background-primary);
+}
+
+.mp-tm-font-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.mp-tm-font-name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.mp-tm-font-value {
+    display: block;
+    font-size: 0.8em;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mp-tm-font-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px;
+}
+
+.mp-tm-font-delete:hover {
+    color: var(--text-error);
+}
+
+.mp-tm-font-badge {
+    font-size: 0.75em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--background-modifier-border);
+    color: var(--text-muted);
+}
+
+.mp-tm-add-font {
+    padding: 16px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 8px;
+    background: var(--background-primary-alt);
+}
+
+.mp-tm-add-font h4 {
+    margin: 0 0 10px;
+}

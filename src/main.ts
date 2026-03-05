@@ -1,6 +1,7 @@
 import { Plugin, Notice, TFile, MarkdownView } from 'obsidian';
 import { MPView, VIEW_TYPE_MP } from './view';
-import { TemplateManager } from './templateManager';
+import { ThemeManager } from './themeManager';
+import { ThemeManagerView, VIEW_TYPE_THEME_MANAGER } from './themeManagerView';
 import { SettingsManager } from './settings/settings';
 import { MPConverter } from './converter';
 import { DonateManager } from './donateManager';
@@ -11,11 +12,11 @@ import { Logger } from './utils/logger';
 
 export default class MPPublisherPlugin extends Plugin {
   settingsManager: SettingsManager;
-  templateManager: TemplateManager;
+  themeManager: ThemeManager;
   wechatPublisher: WechatPublisher;
   logger: Logger;
   showPublishModal = showPublishModal;
-  
+
   // 为了兼容性，添加 settings getter
   get settings() {
     return this.settingsManager.getSettings();
@@ -34,8 +35,9 @@ export default class MPPublisherPlugin extends Plugin {
     this.logger.setDebugMode(this.settings.debugMode);
     this.logger.debug('调试模式已启用:', this.settings.debugMode);
 
-    // 初始化模板管理器
-    this.templateManager = new TemplateManager(this.app, this.settingsManager);
+    // 初始化 CSS 主题管理器
+    this.themeManager = new ThemeManager(this.app, this);
+    await this.themeManager.initialize();
 
     // 初始化转换器
     MPConverter.initialize(this.app);
@@ -47,14 +49,20 @@ export default class MPPublisherPlugin extends Plugin {
     this.wechatPublisher = new WechatPublisher(this.app, this);
     this.logger.debug('微信发布器已初始化');
 
-    // 注册视图
+    // 注册预览视图
     this.registerView(
       VIEW_TYPE_MP,
-      (leaf) => new MPView(leaf, this.templateManager, this.settingsManager, this)
+      (leaf) => new MPView(leaf, this.themeManager, this.settingsManager, this),
+    );
+
+    // 注册主题管理视图
+    this.registerView(
+      VIEW_TYPE_THEME_MANAGER,
+      (leaf) => new ThemeManagerView(leaf, this.themeManager, this.settingsManager, this),
     );
 
     // 添加功能按钮
-    this.addRibbonIcon("send", "打开公众号发布", () => {
+    this.addRibbonIcon('send', '打开公众号发布', () => {
       this.activateView();
     });
 
@@ -64,7 +72,16 @@ export default class MPPublisherPlugin extends Plugin {
       name: '打开公众号发布插件',
       callback: async () => {
         await this.activateView();
-      }
+      },
+    });
+
+    // 添加打开主题管理命令
+    this.addCommand({
+      id: 'open-theme-manager',
+      name: '打开主题管理',
+      callback: async () => {
+        await this.activateThemeManager();
+      },
     });
 
     // 添加发布命令
@@ -77,7 +94,7 @@ export default class MPPublisherPlugin extends Plugin {
         }
         showPublishModal.call(this, view);
         return true;
-      }
+      },
     });
 
     // 添加设置面板
@@ -87,14 +104,12 @@ export default class MPPublisherPlugin extends Plugin {
   }
 
   async activateView() {
-    // 如果视图已经存在，激活它
     const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_MP);
     if (leaves.length > 0) {
       this.app.workspace.revealLeaf(leaves[0]);
       return;
     }
 
-    // 创建新视图
     const rightLeaf = this.app.workspace.getRightLeaf(false);
     if (rightLeaf) {
       await rightLeaf.setViewState({
@@ -103,6 +118,24 @@ export default class MPPublisherPlugin extends Plugin {
       });
     } else {
       new Notice('无法创建视图面板');
+    }
+  }
+
+  async activateThemeManager() {
+    const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_THEME_MANAGER);
+    if (leaves.length > 0) {
+      this.app.workspace.revealLeaf(leaves[0]);
+      return;
+    }
+
+    const leaf = this.app.workspace.getLeaf(true);
+    if (leaf) {
+      await leaf.setViewState({
+        type: VIEW_TYPE_THEME_MANAGER,
+        active: true,
+      });
+    } else {
+      new Notice('无法创建主题管理面板');
     }
   }
 

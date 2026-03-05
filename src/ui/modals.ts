@@ -522,14 +522,11 @@ export class PublishModal extends Modal {
 			if (!htmlContent) {
 				this.plugin.logger.warn('未找到预览视图，使用默认渲染');
 				const content = this.markdownView.getViewData();
-				const settings = this.plugin.settings;
 				htmlContent = await markdownToHtml(
 					this.app,
 					content,
 					this.markdownView.file?.path || '',
-					false,
-					settings.enableWechatStyle,
-					settings.wechatThemeStyle
+					this.plugin.themeManager,
 				);
 			}
 

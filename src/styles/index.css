@@ -1,11 +1,7 @@
 @import url('./view/layout.css');
 @import url('./view/preview.css');
 @import url('./settings/settings.css');
-@import url('./settings/font-modal.css');
-@import url('./settings/template-modal.css');
-@import url('./settings/template-preview-modal.css');
-@import url('./settings/background-modal.css');
-@import url('./settings/css-editor.css');
+@import url('./theme-manager.css');
 
 /* 发布按钮样式 */
 .mp-publish-button {

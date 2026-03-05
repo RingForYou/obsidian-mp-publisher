@@ -1,0 +1,208 @@
+/* 默认主题 - 简洁清爽 */
+
+.mp-content-section {
+  font-size: 16px;
+  color: #4a4a4a;
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* 标题 */
+.mp-content-section h1 {
+  margin: 32px 0 16px;
+  font-size: 2em;
+  font-weight: bold;
+  color: #2c3e50;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+}
+
+.mp-content-section h2 {
+  margin: 28px 0 14px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #34495e;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+.mp-content-section h3 {
+  margin: 24px 0 12px;
+  font-size: 1.25em;
+  font-weight: bold;
+  color: #3d566e;
+  line-height: 1.5;
+}
+
+.mp-content-section h4,
+.mp-content-section h5,
+.mp-content-section h6 {
+  margin: 20px 0 10px;
+  font-size: 1em;
+  font-weight: bold;
+  color: #47637f;
+  line-height: 1.5;
+}
+
+/* 段落 */
+.mp-content-section p {
+  margin: 1em 0;
+  line-height: 1.8;
+  font-size: 1em;
+  color: #4a4a4a;
+}
+
+/* 列表 */
+.mp-content-section ul,
+.mp-content-section ol {
+  padding-left: 32px;
+  color: #4a4a4a;
+}
+
+.mp-content-section li {
+  font-size: 1em;
+  color: #4a4a4a;
+  line-height: 1.8;
+}
+
+.mp-content-section .task-list-item {
+  list-style: none;
+  font-size: 1em;
+  color: #4a4a4a;
+  line-height: 1.8;
+}
+
+/* 引用 */
+.mp-content-section blockquote {
+  border-left: 4px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 10px 16px;
+  background: #f6f8fa;
+  margin: 0.8em 0;
+  color: #6a737d;
+  font-style: italic;
+  word-wrap: break-word;
+}
+
+.mp-content-section blockquote p {
+  margin: 0;
+  padding: 0;
+  line-height: inherit;
+}
+
+/* 代码块 */
+.mp-content-section pre {
+  color: #333;
+  background: #f8f8f8;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin: 1.2em 0;
+  padding: 1em;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.mp-content-section pre .mp-code-header {
+  margin-bottom: 1em;
+  display: flex;
+  gap: 6px;
+}
+
+.mp-content-section pre .mp-code-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.mp-content-section pre .mp-code-dot:nth-child(1) { background-color: #ff5f56; }
+.mp-content-section pre .mp-code-dot:nth-child(2) { background-color: #ffbd2e; }
+.mp-content-section pre .mp-code-dot:nth-child(3) { background-color: #27c93f; }
+
+/* 行内代码 */
+.mp-content-section code:not(pre code) {
+  background: #f8f8f8;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #333;
+  font-size: 14px;
+  border: 1px solid #eee;
+}
+
+/* 链接 */
+.mp-content-section a {
+  color: #3498db;
+  text-decoration: none;
+  border-bottom: 1px solid #3498db;
+}
+
+/* 强调 */
+.mp-content-section strong {
+  font-weight: bold;
+  color: #4a4a4a;
+}
+
+.mp-content-section em {
+  font-style: italic;
+  color: #4a4a4a;
+}
+
+.mp-content-section del {
+  text-decoration: line-through;
+  color: #4a4a4a;
+}
+
+/* 表格 */
+.mp-content-section table {
+  width: 100%;
+  margin: 1em 0;
+  border-collapse: collapse;
+  border: 1px solid #e1e4e8;
+}
+
+.mp-content-section th {
+  background: #f6f8fa;
+  font-weight: bold;
+  color: #4a4a4a;
+  border-bottom: 2px solid #e1e4e8;
+  padding: 8px;
+  font-size: 1em;
+}
+
+.mp-content-section td {
+  border: 1px solid #f0f0f0;
+  padding: 8px;
+  color: #4a4a4a;
+  font-size: 1em;
+}
+
+/* 分隔线 */
+.mp-content-section hr {
+  border: none;
+  border-top: 1px solid #f0f0f0;
+  margin: 20px 0;
+}
+
+/* 图片 */
+.mp-content-section img {
+  max-width: 100%;
+  height: auto;
+  margin: 1em auto;
+  display: block;
+}
+
+/* 脚注 */
+.mp-content-section .footnote-ref {
+  color: #3498db;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.mp-content-section .footnote-backref {
+  color: #3498db;
+  text-decoration: none;
+  font-size: 0.9em;
+}
