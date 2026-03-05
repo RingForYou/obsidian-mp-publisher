@@ -11,8 +11,7 @@ export class MPView extends ItemView {
     private previewEl: HTMLElement;
     private currentFile: TFile | null = null;
     private updateTimer: NodeJS.Timeout | null = null;
-    private isPreviewLocked: boolean = false;
-    private lockButton: HTMLButtonElement;
+    private refreshButton: HTMLButtonElement;
     private copyButton: HTMLButtonElement;
     private themeManager: ThemeManager;
     private settingsManager: SettingsManager;
@@ -55,14 +54,13 @@ export class MPView extends ItemView {
         const toolbar = container.createEl('div', { cls: 'mp-toolbar' });
         const controlsGroup = toolbar.createEl('div', { cls: 'mp-controls-group' });
 
-        // 锁定按钮
-        this.lockButton = controlsGroup.createEl('button', {
-            cls: 'mp-lock-button',
-            attr: { 'aria-label': '开启实时预览状态' },
+        // 刷新按钮
+        this.refreshButton = controlsGroup.createEl('button', {
+            cls: 'mp-refresh-button',
+            attr: { 'aria-label': '刷新预览' },
         });
-        setIcon(this.lockButton, 'lock');
-        this.lockButton.setAttribute('aria-label', '开启实时预览状态');
-        this.lockButton.addEventListener('click', () => this.togglePreviewLock());
+        setIcon(this.refreshButton, 'refresh-cw');
+        this.refreshButton.addEventListener('click', () => this.forceRefreshPreview());
 
         // 主题选择器
         const themeOptions = this.getThemeOptions();
@@ -180,8 +178,8 @@ export class MPView extends ItemView {
                 1. 选择喜欢的主题模板
                 2. 调整字体和字号
                 3. 实时预览效果
-                4. 点击【复制按钮】即可粘贴到公众号
-                5. 编辑实时查看效果，点🔓关闭实时刷新
+                4. 修改主题 CSS 后点击🔄刷新按钮更新预览
+                5. 点击【复制按钮】即可粘贴到公众号
                 6. 如果你喜欢这个插件，欢迎关注打赏`,
         });
 
@@ -287,25 +285,89 @@ export class MPView extends ItemView {
 
     /** 上次同步的主题 ID，用于检测变更 */
     private lastSyncedThemeId: string = '';
+    /** 上次同步时的主题列表快照（用于检测新增/删除主题） */
+    private lastThemeOptionsSnapshot: string = '';
+    /** 上次同步时的活动主题 CSS 哈希（用于检测 CSS 内容变更） */
+    private lastThemeCSSSnapshot: string = '';
 
     /** 从设置中同步主题状态到预览视图 */
     private syncThemeFromSettings(): void {
         const settings = this.settingsManager.getSettings();
         const currentActiveId = settings.activeThemeId || 'default';
 
-        // 如果主题没有变化，跳过
-        if (currentActiveId === this.lastSyncedThemeId) return;
+        // 检测主题列表是否变化（新增/删除了主题）
+        const themeOptions = this.getThemeOptions();
+        const themeOptionsSnapshot = themeOptions.map(o => o.value).join(',');
+        const themeListChanged = themeOptionsSnapshot !== this.lastThemeOptionsSnapshot;
+
+        if (themeListChanged) {
+            this.lastThemeOptionsSnapshot = themeOptionsSnapshot;
+            // 重建主题选择器选项
+            this.rebuildSelectOptions(this.customThemeSelect, themeOptions, currentActiveId);
+        }
+
+        // 检测活动主题 CSS 内容是否变化
+        const activeTheme = this.themeManager.getTheme(currentActiveId);
+        const currentCSSSnapshot = activeTheme ? activeTheme.css.substring(0, 200) + activeTheme.css.length : '';
+        const cssChanged = currentCSSSnapshot !== this.lastThemeCSSSnapshot;
+
+        // 检测主题 ID 是否变化
+        const themeIdChanged = currentActiveId !== this.lastSyncedThemeId;
+
+        if (!themeIdChanged && !cssChanged && !themeListChanged) return;
+
         this.lastSyncedThemeId = currentActiveId;
+        this.lastThemeCSSSnapshot = currentCSSSnapshot;
 
         // 同步 themeManager 的激活主题
         this.themeManager.setActiveTheme(currentActiveId);
 
         // 同步主题选择器的显示
-        const themeOptions = this.getThemeOptions();
         this.restoreSelectValue(this.customThemeSelect, currentActiveId, themeOptions);
 
         // 重新应用主题到预览区域
         this.applyCurrentTheme();
+    }
+
+    /** 重建下拉选择器的选项列表 */
+    private rebuildSelectOptions(
+        selectContainer: HTMLElement,
+        options: { value: string; label: string }[],
+        activeValue: string,
+    ): void {
+        const dropdown = selectContainer.querySelector('.select-dropdown');
+        const selectedText = selectContainer.querySelector('.selected-text');
+        const customSelect = selectContainer.querySelector('.custom-select');
+        if (!dropdown || !selectedText || !customSelect) return;
+
+        dropdown.empty();
+
+        for (const option of options) {
+            const item = dropdown.createEl('div', {
+                cls: `select-item ${option.value === activeValue ? 'selected' : ''}`,
+                text: option.label,
+            });
+            item.dataset.value = option.value;
+
+            item.addEventListener('click', () => {
+                dropdown.querySelectorAll('.select-item').forEach(el =>
+                    el.classList.remove('selected'));
+                item.classList.add('selected');
+                selectedText.textContent = option.label;
+                customSelect.setAttribute('data-value', option.value);
+                (dropdown as HTMLElement).classList.remove('show');
+                customSelect.dispatchEvent(new CustomEvent('change', {
+                    detail: { value: option.value },
+                }));
+            });
+        }
+
+        // 更新显示文本
+        const activeOption = options.find(o => o.value === activeValue);
+        if (activeOption) {
+            selectedText.textContent = activeOption.label;
+            customSelect.setAttribute('data-value', activeOption.value);
+        }
     }
 
     /** 恢复下拉选择器的值 */
@@ -333,7 +395,7 @@ export class MPView extends ItemView {
     }
 
     private updateControlsState(enabled: boolean) {
-        this.lockButton.disabled = !enabled;
+        this.refreshButton.disabled = !enabled;
 
         const themeSelect = this.customThemeSelect.querySelector('.custom-select');
         const fontSelect = this.customFontSelect.querySelector('.custom-select');
@@ -367,25 +429,36 @@ export class MPView extends ItemView {
         }
 
         this.updateControlsState(true);
-        this.isPreviewLocked = false;
-        setIcon(this.lockButton, 'unlock');
         await this.updatePreview();
     }
 
-    private async togglePreviewLock() {
-        this.isPreviewLocked = !this.isPreviewLocked;
-        const lockIcon = this.isPreviewLocked ? 'lock' : 'unlock';
-        const lockStatus = this.isPreviewLocked ? '开启实时预览状态' : '关闭实时预览状态';
-        setIcon(this.lockButton, lockIcon);
-        this.lockButton.setAttribute('aria-label', lockStatus);
+    /** 强制刷新预览：重新加载本地主题、同步主题选择器、重新渲染预览 */
+    private async forceRefreshPreview(): Promise<void> {
+        this.refreshButton.disabled = true;
+        setIcon(this.refreshButton, 'loader');
 
-        if (!this.isPreviewLocked) {
+        try {
+            // 重新加载本地主题（捕获 CSS 文件变更）
+            await this.themeManager.reloadLocalThemes();
+
+            // 重置同步快照，强制下次同步生效
+            this.lastSyncedThemeId = '';
+            this.lastThemeOptionsSnapshot = '';
+            this.lastThemeCSSSnapshot = '';
+
+            // 立即同步主题状态和选择器
+            this.syncThemeFromSettings();
+
+            // 重新渲染预览
             await this.updatePreview();
+        } finally {
+            this.refreshButton.disabled = false;
+            setIcon(this.refreshButton, 'refresh-cw');
         }
     }
 
     async onFileModify(file: TFile) {
-        if (file === this.currentFile && !this.isPreviewLocked) {
+        if (file === this.currentFile) {
             if (this.updateTimer) {
                 clearTimeout(this.updateTimer);
             }
@@ -486,12 +559,20 @@ export class MPView extends ItemView {
         return container;
     }
 
-    /** 获取主题选项 */
+    /** 获取主题选项（本地自定义主题排在内置主题之前） */
     private getThemeOptions(): { value: string; label: string }[] {
-        const themes = this.themeManager.getVisibleThemes();
-        return themes.length > 0
-            ? themes.map(theme => ({ value: theme.id, label: theme.name }))
-            : [{ value: 'default', label: '默认主题' }];
+        const allThemes = this.themeManager.getVisibleThemes();
+        if (allThemes.length === 0) {
+            return [{ value: 'default', label: '默认主题' }];
+        }
+
+        // 本地主题排在前面，内置主题排在后面
+        const localThemes = allThemes.filter(t => t.source === 'local');
+        const builtinThemes = allThemes.filter(t => t.source === 'builtin');
+        const otherThemes = allThemes.filter(t => t.source !== 'local' && t.source !== 'builtin');
+        const sortedThemes = [...localThemes, ...builtinThemes, ...otherThemes];
+
+        return sortedThemes.map(theme => ({ value: theme.id, label: theme.name }));
     }
 
     /** 获取字体选项 */

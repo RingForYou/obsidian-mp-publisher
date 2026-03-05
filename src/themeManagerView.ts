@@ -423,6 +423,18 @@ export class ThemeManagerView extends ItemView {
         const previewEl = card.createEl('pre', { cls: 'mp-tm-card-preview' });
         previewEl.createEl('code', { text: previewLines + '\n...' });
 
+        // 完整 CSS 查看区域（默认隐藏）
+        const fullCssContainer = card.createEl('div', { cls: 'mp-tm-full-css mp-tm-hidden' });
+        const fullCssToolbar = fullCssContainer.createEl('div', { cls: 'mp-tm-full-css-toolbar' });
+        const copyCssButton = fullCssToolbar.createEl('button', { text: '复制 CSS', cls: 'mp-tm-copy-css-btn' });
+        copyCssButton.addEventListener('click', async () => {
+            await navigator.clipboard.writeText(theme.css);
+            copyCssButton.textContent = '已复制 ✓';
+            setTimeout(() => { copyCssButton.textContent = '复制 CSS'; }, 2000);
+        });
+        const fullCssEl = fullCssContainer.createEl('pre', { cls: 'mp-tm-full-css-content' });
+        fullCssEl.createEl('code', { text: theme.css });
+
         const actions = card.createEl('div', { cls: 'mp-tm-card-actions' });
 
         if (!isActive) {
@@ -436,6 +448,15 @@ export class ThemeManagerView extends ItemView {
         } else {
             actions.createEl('span', { text: '✓ 当前使用', cls: 'mp-tm-active-label' });
         }
+
+        // 查看 CSS 按钮
+        const viewCssButton = actions.createEl('button', { text: '查看 CSS', cls: 'mp-tm-view-css-btn' });
+        viewCssButton.addEventListener('click', () => {
+            const isHidden = fullCssContainer.classList.contains('mp-tm-hidden');
+            fullCssContainer.classList.toggle('mp-tm-hidden');
+            previewEl.classList.toggle('mp-tm-hidden');
+            viewCssButton.textContent = isHidden ? '收起 CSS' : '查看 CSS';
+        });
 
         // 编辑按钮（仅本地主题）
         if (theme.source === ThemeSource.LOCAL) {

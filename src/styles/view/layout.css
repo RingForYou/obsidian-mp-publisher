@@ -74,7 +74,7 @@
 }
 
 /* 特殊按钮样式 */
-.mp-controls-group .mp-lock-button,
+.mp-controls-group .mp-refresh-button,
 .mp-controls-group .mp-help-button {
     width: 36px;
     padding: 0;

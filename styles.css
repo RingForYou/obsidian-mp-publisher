@@ -61,7 +61,7 @@
   border-color: var(--background-modifier-border) !important;
   box-shadow: none;
 }
-.mp-controls-group .mp-lock-button,
+.mp-controls-group .mp-refresh-button,
 .mp-controls-group .mp-help-button {
   width: 36px;
   padding: 0;
@@ -1570,6 +1570,57 @@ ol {
 .mp-tm-card-preview code {
     font-size: inherit;
     white-space: pre;
+}
+
+/* 完整 CSS 查看区域 */
+.mp-tm-full-css {
+    margin: 8px 0;
+}
+
+.mp-tm-full-css-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 4px;
+}
+
+.mp-tm-copy-css-btn {
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    border: 1px solid var(--background-modifier-border);
+    background: var(--interactive-accent);
+    color: var(--text-on-accent);
+    transition: all 0.15s;
+}
+
+.mp-tm-copy-css-btn:hover {
+    opacity: 0.85;
+}
+
+.mp-tm-full-css-content {
+    background: var(--background-secondary);
+    border-radius: 4px;
+    padding: 12px;
+    max-height: 400px;
+    overflow: auto;
+    font-size: 0.75em;
+    line-height: 1.5;
+    border: 1px solid var(--background-modifier-border);
+}
+
+.mp-tm-full-css-content code {
+    font-size: inherit;
+    white-space: pre;
+}
+
+.mp-tm-view-css-btn {
+    background: var(--background-primary) !important;
+    color: var(--text-muted) !important;
+}
+
+.mp-tm-view-css-btn:hover {
+    color: var(--text-normal) !important;
 }
 
 /* 卡片操作按钮 */
