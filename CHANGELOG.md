@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.2.4] - 2026-03-05
+
+### 📦 Callout 支持(beta) & 代码清理
+
+#### 新增
+- **Callout 提示框支持(beta)**：在预览中正确显示 Obsidian 的 30+ 种 Callout 类型（note/tip/warning/danger/success/example/todo/quote 等）
+- 每种 Callout 类型有对应的 emoji 图标、背景色、边框色和标题色
+- 所有 8 个内置主题 CSS 均添加 Callout 预览样式，暗色主题有专属配色
+- Callout 使用内联样式，为后续公众号发布兼容做准备
+
+#### 移除
+- 移除自定义字体管理功能（添加/删除自定义字体的 UI 和 `addCustomFont`/`removeCustomFont`/`updateCustomFont` 方法）
+- 主题管理界面字体区域简化为仅展示内置字体列表
+
+#### 文档
+- 更新 README 安装方式：BRAT 插件安装（推荐）+ 手动从 Release 下载
+- 完善功能说明、预览控件说明、使用技巧、FAQ
+
+---
+
 ## [2.1.3] - 2026-03-05
 
 ### 🔧 主题管理优化
