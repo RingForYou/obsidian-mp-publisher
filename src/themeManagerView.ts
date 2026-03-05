@@ -327,7 +327,7 @@ export class ThemeManagerView extends ItemView {
 
     private renderFontSection(): void {
         const section = this.contentEl.createEl('div', { cls: 'mp-tm-section' });
-        section.createEl('h3', { text: '🔤 字体管理' });
+        section.createEl('h3', { text: '🔤 内置字体' });
 
         const fontOptions = this.themeManager.getFontOptions();
         const fontList = section.createEl('div', { cls: 'mp-tm-font-list' });
@@ -338,61 +338,8 @@ export class ThemeManagerView extends ItemView {
             const fontInfo = fontItem.createEl('div', { cls: 'mp-tm-font-info' });
             fontInfo.createEl('span', { text: font.label, cls: 'mp-tm-font-name' });
             fontInfo.createEl('span', { text: font.value, cls: 'mp-tm-font-value' });
-
-            if (!font.isPreset) {
-                const deleteButton = fontItem.createEl('button', { cls: 'mp-tm-font-delete' });
-                setIcon(deleteButton, 'trash');
-                deleteButton.addEventListener('click', () => {
-                    new ConfirmModal(
-                        this.app,
-                        '确认删除字体',
-                        `确定要删除「${font.label}」字体配置吗？`,
-                        async () => {
-                            await this.themeManager.removeCustomFont(font.value);
-                            await this.renderContent();
-                            new Notice('字体已删除');
-                        },
-                    ).open();
-                });
-            } else {
-                fontItem.createEl('span', { text: '内置', cls: 'mp-tm-font-badge' });
-            }
+            fontItem.createEl('span', { text: '内置', cls: 'mp-tm-font-badge' });
         }
-
-        // 添加自定义字体
-        const addFontGroup = section.createEl('div', { cls: 'mp-tm-add-font' });
-        addFontGroup.createEl('h4', { text: '添加自定义字体' });
-
-        const fontNameInput = addFontGroup.createEl('input', {
-            type: 'text',
-            cls: 'mp-tm-input',
-            placeholder: '字体显示名称，如：思源宋体',
-        });
-
-        const fontValueInput = addFontGroup.createEl('input', {
-            type: 'text',
-            cls: 'mp-tm-input',
-            placeholder: 'CSS font-family 值，如："Source Han Serif SC", serif',
-        });
-
-        const addFontButton = addFontGroup.createEl('button', {
-            text: '添加字体',
-            cls: 'mp-tm-save-btn',
-        });
-
-        addFontButton.addEventListener('click', async () => {
-            const label = fontNameInput.value.trim();
-            const value = fontValueInput.value.trim();
-
-            if (!label || !value) {
-                new Notice('请填写字体名称和 CSS font-family 值');
-                return;
-            }
-
-            await this.themeManager.addCustomFont({ label, value, isPreset: false });
-            new Notice(`字体「${label}」已添加`);
-            await this.renderContent();
-        });
     }
 
     // ==================== 通用主题卡片 ====================

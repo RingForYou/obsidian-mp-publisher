@@ -446,28 +446,4 @@ export class ThemeManager {
         return settings.customFonts || DEFAULT_FONTS;
     }
 
-    /** 添加自定义字体 */
-    async addCustomFont(font: FontOption): Promise<void> {
-        const fonts = this.getFontOptions();
-        fonts.push({ ...font, isPreset: false });
-        await this.plugin.settingsManager.updateSettings({ customFonts: fonts });
-    }
-
-    /** 删除自定义字体 */
-    async removeCustomFont(fontValue: string): Promise<void> {
-        const fonts = this.getFontOptions().filter(
-            font => font.value !== fontValue || font.isPreset
-        );
-        await this.plugin.settingsManager.updateSettings({ customFonts: fonts });
-    }
-
-    /** 更新自定义字体 */
-    async updateCustomFont(oldValue: string, newFont: FontOption): Promise<void> {
-        const fonts = this.getFontOptions();
-        const index = fonts.findIndex(font => font.value === oldValue);
-        if (index !== -1 && !fonts[index].isPreset) {
-            fonts[index] = { ...newFont, isPreset: false };
-            await this.plugin.settingsManager.updateSettings({ customFonts: fonts });
-        }
-    }
 }
