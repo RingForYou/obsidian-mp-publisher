@@ -223,18 +223,12 @@ export async function markdownToHtml(
         // 格式化内容（创建 section 容器、处理代码块等）
         MPConverter.formatContent(tempDiv);
 
-        // 应用主题 CSS
-        if (themeManager) {
-            const section = tempDiv.querySelector('.mp-content-section') as HTMLElement;
-            if (section) {
-                themeManager.applyTheme(section);
-            }
-        }
-
         // 移除定位样式
         tempDiv.removeAttribute('style');
 
-        // 获取主题 CSS 用于 juice 内联
+        // 获取主题 CSS 用于 juice 内联（不通过 applyTheme 注入 <style> 标签，
+        // 而是直接通过 juice 将 CSS 内联到每个元素的 style 属性上，
+        // 确保公众号后台和跨设备粘贴时样式不丢失）
         const themeCSS = themeManager ? themeManager.getActiveThemeCSS() : '';
 
         // 序列化 HTML

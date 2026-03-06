@@ -1,32 +1,56 @@
 import { Notice } from 'obsidian';
 
 export class CopyManager {
-    private static cleanupHtml(element: HTMLElement): string {
-        // 创建克隆以避免修改原始元素
-        const clone = element.cloneNode(true) as HTMLElement;
+    /**
+     * 提取 <style> 标签中的 CSS 内容
+     */
+    private static extractStyleCSS(element: HTMLElement): string {
+        const styleTags = element.querySelectorAll('style');
+        const cssFragments: string[] = [];
+        styleTags.forEach(tag => {
+            if (tag.textContent) {
+                cssFragments.push(tag.textContent);
+            }
+        });
+        return cssFragments.join('\n');
+    }
 
-        // 移除所有的 data-* 属性
-        clone.querySelectorAll('*').forEach(el => {
+    /**
+     * 使用 juice 将 CSS 内联到 HTML 元素的 style 属性上，
+     * 确保跨平台粘贴时样式一致
+     */
+    private static async inlineCSS(html: string, css: string): Promise<string> {
+        if (!css) return html;
+        try {
+            const { inlineContent } = await import('juice');
+            return inlineContent(html, css, {
+                applyStyleTags: true,
+                removeStyleTags: true,
+                preserveMediaQueries: false,
+                preserveFontFaces: false,
+            });
+        } catch (error) {
+            console.error('juice 内联 CSS 失败:', error);
+            return html;
+        }
+    }
+
+    /**
+     * 清理 HTML 中不需要的属性（在 CSS 已内联之后调用）
+     */
+    private static cleanupAttributes(element: HTMLElement): void {
+        element.querySelectorAll('*').forEach(el => {
+            // 移除 data-* 属性
             Array.from(el.attributes).forEach(attr => {
                 if (attr.name.startsWith('data-')) {
                     el.removeAttribute(attr.name);
                 }
             });
-        });
-
-        // 移除所有的 class 属性
-        clone.querySelectorAll('*').forEach(el => {
+            // 移除 id 属性
+            el.removeAttribute('id');
+            // 移除 class 属性（CSS 已内联，class 不再需要）
             el.removeAttribute('class');
         });
-
-        // 移除所有的 id 属性
-        clone.querySelectorAll('*').forEach(el => {
-            el.removeAttribute('id');
-        });
-
-        // 使用 XMLSerializer 安全地转换为字符串
-        const serializer = new XMLSerializer();
-        return serializer.serializeToString(clone);
     }
 
     private static async processImages(container: HTMLElement): Promise<void> {
@@ -61,17 +85,36 @@ export class CopyManager {
             if (!contentSection) {
                 throw new Error('找不到内容区域');
             }
-            // 使用新的 cleanupHtml 方法
-            const cleanHtml = this.cleanupHtml(contentSection as HTMLElement);
+
+            // 1. 提取 <style> 标签中的主题 CSS
+            const themeCSS = this.extractStyleCSS(contentSection as HTMLElement);
+
+            // 2. 移除 <style> 标签（后续由 juice 内联）
+            contentSection.querySelectorAll('style').forEach(tag => tag.remove());
+
+            // 3. 序列化为 HTML 字符串
+            const serializer = new XMLSerializer();
+            let rawHtml = serializer.serializeToString(contentSection);
+            rawHtml = rawHtml.replace(/ xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
+
+            // 4. 使用 juice 将 CSS 内联到每个元素的 style 属性
+            let inlinedHtml = await this.inlineCSS(rawHtml, themeCSS);
+
+            // 5. 清理多余属性（data-*、id、class）
+            const tempContainer = document.createElement('div');
+            tempContainer.innerHTML = inlinedHtml;
+            this.cleanupAttributes(tempContainer);
+            const finalHtml = tempContainer.innerHTML;
 
             const clipData = new ClipboardItem({
-                'text/html': new Blob([cleanHtml], { type: 'text/html' }),
+                'text/html': new Blob([finalHtml], { type: 'text/html' }),
                 'text/plain': new Blob([clone.textContent || ''], { type: 'text/plain' })
             });
 
             await navigator.clipboard.write([clipData]);
             new Notice('已复制到剪贴板');
         } catch (error) {
+            console.error('复制失败:', error);
             new Notice('复制失败');
         }
     }
