@@ -25,13 +25,13 @@ export class MPConverter {
 
     private static processElements(container: HTMLElement | null): void {
         if (!container) return;
-        // 处理列表项内部元素，用section包裹
+        // 处理列表项内部元素，用 inline 的 span 包裹（避免 section 块级元素导致额外空行）
         container.querySelectorAll('li').forEach(li => {
-            const section = document.createElement('section');
+            const wrapper = document.createElement('span');
             while (li.firstChild) {
-                section.appendChild(li.firstChild);
+                wrapper.appendChild(li.firstChild);
             }
-            li.appendChild(section);
+            li.appendChild(wrapper);
         });
 
         // 处理代码块

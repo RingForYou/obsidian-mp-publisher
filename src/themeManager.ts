@@ -183,9 +183,9 @@ export class ThemeManager {
 
     // ==================== 本地主题管理 ====================
 
-    /** 获取本地自定义主题目录路径 */
+    /** 获取本地自定义主题目录路径（使用插件实际安装目录下的 custom 文件夹） */
     private getCustomThemeDir(): string {
-        return this.app.vault.configDir + '/plugins/mp-publisher/custom';
+        return this.plugin.manifest.dir + '/custom';
     }
 
     /** 加载本地自定义 CSS 主题 */
