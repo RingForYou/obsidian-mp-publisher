@@ -1,9 +1,10 @@
-import { ItemView, WorkspaceLeaf, MarkdownRenderer, TFile, setIcon, MarkdownView } from 'obsidian';
+import { Editor, ItemView, WorkspaceLeaf, MarkdownRenderer, TFile, setIcon, MarkdownView, Notice } from 'obsidian';
 import { MPConverter } from './converter';
 import { CopyManager } from './copyManager';
 import { DonateManager } from './donateManager';
 import type { SettingsManager } from './settings/settings';
 import type { ThemeManager } from './themeManager';
+import { runInsertImage } from './insertImage';
 
 export const VIEW_TYPE_MP = 'mp-preview';
 
@@ -12,6 +13,7 @@ export class MPView extends ItemView {
     private currentFile: TFile | null = null;
     private updateTimer: NodeJS.Timeout | null = null;
     private refreshButton: HTMLButtonElement;
+    private insertImageButton: HTMLButtonElement;
     private copyButton: HTMLButtonElement;
     private themeManager: ThemeManager;
     private settingsManager: SettingsManager;
@@ -61,6 +63,14 @@ export class MPView extends ItemView {
         });
         setIcon(this.refreshButton, 'refresh-cw');
         this.refreshButton.addEventListener('click', () => this.forceRefreshPreview());
+
+        // 插入图片按钮（自动上传至微信素材库）
+        this.insertImageButton = controlsGroup.createEl('button', {
+            cls: 'mp-insert-image-button',
+            attr: { 'aria-label': '插入图片（并上传至微信素材库）' },
+        });
+        setIcon(this.insertImageButton, 'image-plus');
+        this.insertImageButton.addEventListener('click', () => this.onInsertImage());
 
         // 主题选择器
         const themeOptions = this.getThemeOptions();
@@ -275,6 +285,24 @@ export class MPView extends ItemView {
         await this.onFileOpen(currentFile);
     }
 
+    /** 插入图片（保存到资源目录并上传至微信素材库），有编辑器则在光标处插入，否则追加到文末 */
+    private onInsertImage(): void {
+        if (!this.currentFile) {
+            new Notice('请先打开要编辑的文档');
+            return;
+        }
+        const leaves = this.app.workspace.getLeavesOfType('markdown');
+        let editor: Editor | undefined;
+        for (const leaf of leaves) {
+            const view = leaf.view;
+            if (view instanceof MarkdownView && view.file === this.currentFile) {
+                editor = view.editor;
+                break;
+            }
+        }
+        runInsertImage(this.plugin, this.currentFile, editor, !editor);
+    }
+
     /** 将当前主题的 CSS 应用到预览区域 */
     private applyCurrentTheme(): void {
         const section = this.previewEl.querySelector('.mp-content-section') as HTMLElement;
@@ -396,6 +424,7 @@ export class MPView extends ItemView {
 
     private updateControlsState(enabled: boolean) {
         this.refreshButton.disabled = !enabled;
+        this.insertImageButton.disabled = !enabled;
 
         const themeSelect = this.customThemeSelect.querySelector('.custom-select');
         const fontSelect = this.customFontSelect.querySelector('.custom-select');

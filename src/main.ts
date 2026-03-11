@@ -9,6 +9,7 @@ import { MPSettingTab } from './settings/MPSettingTab';
 import { WechatPublisher } from './publisher/wechat';
 import { showPublishModal } from './publisher';
 import { Logger } from './utils/logger';
+import { runInsertImage } from './insertImage';
 
 export default class MPPublisherPlugin extends Plugin {
   settingsManager: SettingsManager;
@@ -93,6 +94,21 @@ export default class MPPublisherPlugin extends Plugin {
           return true;
         }
         showPublishModal.call(this, view);
+        return true;
+      },
+    });
+
+    // 插入图片（自动上传至微信素材库）
+    this.addCommand({
+      id: 'insert-image-upload-material',
+      name: '插入图片（并上传至微信素材库）',
+      editorCheckCallback: (checking: boolean, editor: any, view: MarkdownView) => {
+        if (checking) {
+          return !!view?.file;
+        }
+        if (view?.file) {
+          runInsertImage(this, view.file, editor);
+        }
         return true;
       },
     });
